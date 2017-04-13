@@ -11,16 +11,31 @@
 
 'use strict';
 
+const request = require('request');
+
 /**
  * for xim interface
  * @param  {object}   option   input xim_content
  * @param  {Function} callback return light list
  */
 function discovery(options, callback) {
-  const callback_option = JSON.parse(JSON.stringify(options));
-  // this is an empty function to be implemented or a place holder
+  console.log(options);
+  const opt = {
+    method: 'GET',
+    url: `${options.api_endpoint}/switches`,
+    headers: {
+      Authorization: `Bearer ${options.api_token}`,
+    },
+  };
 
-  callback(callback_option);
+  request(opt, (error, response, body) => {
+    const jsonObj = JSON.parse(body);
+    if (error) {
+      throw new Error(error);
+    } else {
+      callback(jsonObj);
+    }
+  });
 }
 
 /**
