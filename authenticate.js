@@ -49,16 +49,19 @@ function authenticate(options, callback) {
       request(opt_end, (error_end, response_end, body_end) => {
         if (error_end) {
           result.endpoints_error = 'endpoints error';
+
           callback(result);
         } else {
           result.api_token = jsonObj.access_token;
           jsonObj = JSON.parse(body_end);
-          result.api_endpoint = jsonObj[1].uri;
+          result.api_endpoint = jsonObj[jsonObj.length - 1].uri;
+
           callback(result);
         }
       });
     } else {
       result.token_error = 'token error';
+
       callback(result);
     }
   });

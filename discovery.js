@@ -19,10 +19,9 @@ const request = require('request');
  * @param  {Function} callback return light list
  */
 function discovery(options, callback) {
-  console.log(options);
   const opt = {
     method: 'GET',
-    url: `${options.api_endpoint}/switches`,
+    url: `${options.api_endpoint}/things`,
     headers: {
       Authorization: `Bearer ${options.api_token}`,
     },
@@ -30,10 +29,18 @@ function discovery(options, callback) {
 
   request(opt, (error, response, body) => {
     const jsonObj = JSON.parse(body);
+    const list = {};
+    list.switches = [];
     if (error) {
       throw new Error(error);
     } else {
-      callback(jsonObj);
+      for (let i = 0; i < jsonObj.switches.length; i += 1) {
+        if (jsonObj.switches[i].switch != null) {
+          list.switches.push(jsonObj.switches[i]);
+        }
+      }
+
+      callback(list);
     }
   });
 }
