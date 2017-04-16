@@ -19,7 +19,7 @@ const port = process.env.PORT || 8080;
 
 const config = {
   client_id: '3843b082-0e09-4720-856f-b6ff3059ff2d',
-  client_secret: '64d237a4-f54b-4ec1-9d66-3f55bdb75de4',
+  client_secret: 'e038052a-51ba-4dd0-bff8-0f737d161cf5',
   site: 'https://graph.api.smartthings.com',
   authorize_path: '/oauth/authorize',
   token_path: '/oauth/token',
