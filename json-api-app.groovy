@@ -5,9 +5,9 @@ import grails.converters.JSON
 */
 
 definition(
-  name: "JSON API App",
+  name: "Bling_SmartApps",
   namespace: "",
-  author: "Taylor Beseda",
+  author: "Bling",
   description: "Return things as JSON",
   category: "My Apps",
   iconUrl: "https://s3.amazonaws.com/smartapp-icons/Convenience/Cat-Convenience.png",
@@ -17,35 +17,37 @@ definition(
 
 
 preferences {
-  	section("Allow these things to be exposed via JSON...") {
-    	input "switches", "capability.switch", title: "Switches", multiple: true, r
-  	}
+  section("Allow these things to be exposed via JSON...") {
+    input "switches", "capability.switch", title: "Switches", multiple: true, required: true, hideWhenEmpty: true
+  }
 }
 
 mappings {
- 	path("/things") {
-    	action: [
-      		GET: "listThings"
-    	]
-  	}
+  path("/things") {
+    action: [
+      GET: "listThings"
+    ]
+  }
 }
 
-def	listThings() {
-	[
-  		switches: switches.collect{device(it,"switch")}
-	]
+def listThings() {
+  [
+    switches: switches.collect{device(it, "switch")}
+  ]
 }
 
 private device(it, type) {
-	def device_state = [label:it.label, type:type, id:it.id]
+  def device_state = [label: it.label, type: type, id: it.id, devtest: it]
 
-	for (attribute in it.supportedAttributes) {
-		device_state."${attribute}" = it.currentValue("${attribute}")
-  	}
+  for (attribute in it.supportedAttributes) {
+    device_state."${attribute}" = it.currentValue("${attribute}")
+  }
 
-  	device_state ? device_state : null
+  device_state ? device_state : null
 }
 
 def installed() {}
 
 def updated() {}
+
+

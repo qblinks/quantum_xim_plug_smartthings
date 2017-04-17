@@ -18,8 +18,8 @@ const discovery = require('./discovery.js');
 const port = process.env.PORT || 8080;
 
 const config = {
-  client_id: '3843b082-0e09-4720-856f-b6ff3059ff2d',
-  client_secret: 'e038052a-51ba-4dd0-bff8-0f737d161cf5',
+  client_id: '7bcbd64d-bb10-46a0-be54-ca9afb248e55',
+  client_secret: '1ed31b49-e3d0-4b13-8700-fd5ea008b04d',
   site: 'https://graph.api.smartthings.com',
   authorize_path: '/oauth/authorize',
   token_path: '/oauth/token',
