@@ -11,6 +11,8 @@
 
 'use strict';
 
+const request = require('request');
+
  /**
   * Get the stat
   *
@@ -20,10 +22,32 @@
   * @param {function} callback to be used by the XIM driver
   */
 function stat(options, callback) {
-  const callback_option = JSON.parse(JSON.stringify(options));
-  // this is an empty function to be implemented or a place holder
+  const opt = {
+    method: 'GET',
+    url: `${options.xim_content.uri}/outletStat/${options.device_id}`,
+    headers: {
+      Authorization: `Bearer ${options.xim_content.access_token}`,
+    },
+  };
 
-  callback(callback_option);
+  request(opt, (error, response, body) => {
+    const result = JSON.parse(body);
+    const callback_option = JSON.parse(JSON.stringify(options));
+    callback_option.stat = [];
+    const plug = {};
+    plug.plug_status = {};
+    plug.device_name = result.label;
+    plug.device_id = result.id;
+    if (result.switch === 'on') {
+      plug.plug_status.onoff = true;
+    } else {
+      plug.plug_status.onoff = false;
+    }
+    callback_option.stat.push(plug);
+    delete callback_option.device_id;
+    delete callback_option.stat;
+    callback(callback_option);
+  });
 }
 
 

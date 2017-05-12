@@ -11,16 +11,40 @@
 
 'use strict';
 
+const request = require('request');
+
 /**
  * [action description]
- * @param  {object} option Light action properties
+ * @param  {object} option Plug action properties
  * @return {bool}        seccess or fail
  */
-function action(option, callback) {
-  const callback_option = JSON.parse(JSON.stringify(option));
-  // this is an empty function to be implemented or a place holder
+function action(options, callback) {
+  let onoff = '';
+  if (options.action.onoff === true) {
+    onoff = 'on';
+  } else {
+    onoff = 'off';
+  }
 
-  callback(callback_option);
+  const opt = {
+    method: 'PUT',
+    url: `${options.xim_content.uri}/outletAction/${options.device_id}/${onoff}`,
+    headers: {
+      Authorization: `Bearer ${options.xim_content.access_token}`,
+    },
+  };
+  request(opt, (error, response) => {
+    const callback_option = JSON.parse(JSON.stringify(options));
+    callback_option.result = {};
+    if (response.statusCode === 204) {
+      callback_option.result.err_no = 0;
+      callback_option.result.err_msg = 'ok';
+    } else {
+      callback_option.result.err_no = 999;
+      callback_option.result.err_msg = 'action fail';
+    }
+    callback(callback_option);
+  });
 }
 
 /**

@@ -15,33 +15,44 @@ const request = require('request');
 
 /**
  * for xim interface
- * @param  {object}   option   input xim_content
- * @param  {Function} callback return light list
+ * @param  {object}   option   input plug url and token
+ * @param  {Function} callback return plug list
  */
 function discovery(options, callback) {
   const opt = {
     method: 'GET',
-    url: `${options.api_endpoint}/things`,
+    url: `${options.xim_content.uri}/outletDiscovery`,
     headers: {
-      Authorization: `Bearer ${options.api_token}`,
+      Authorization: `Bearer ${options.xim_content.access_token}`,
     },
   };
 
   request(opt, (error, response, body) => {
-    const jsonObj = JSON.parse(body);
-    const list = {};
-    list.switches = [];
-    if (error) {
-      throw new Error(error);
+    const result = JSON.parse(body);
+    const callback_option = JSON.parse(JSON.stringify(options));
+    callback_option.result = {};
+    if (result.outlets.length === 0) {
+      callback_option.result.err_no = 999;
+      callback_option.result.err_msg = 'no plugs data';
     } else {
-      for (let i = 0; i < jsonObj.switches.length; i += 1) {
-        if (jsonObj.switches[i].switch != null) {
-          list.switches.push(jsonObj.switches[i]);
+      callback_option.list = [];
+      Object.keys(result.outlets).forEach((key) => {
+        const plug = {};
+        plug.status = {};
+        plug.device_name = result.outlets[key].label;
+        plug.device_id = result.outlets[key].id;
+        if (result.outlets[key].outlet === 'on') {
+          plug.status.onoff = true;
+        } else {
+          plug.status.onoff = false;
         }
-      }
-
-      callback(list);
+        callback_option.list.push(plug);
+        callback_option.result.err_no = 0;
+        callback_option.result.err_msg = 'ok';
+      });
+      delete callback_option.list[0].status;
     }
+    callback(callback_option);
   });
 }
 
