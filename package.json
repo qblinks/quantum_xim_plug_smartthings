@@ -30,6 +30,7 @@
     "color-convert": "^1.8.2",
     "express": "^4.15.2",
     "mathjs": "^3.8.1",
+    "mute": "^2.0.6",
     "path": "^0.12.7",
     "request": "^2.79.0",
     "winston": "^2.3.1"
