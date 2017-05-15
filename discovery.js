@@ -29,29 +29,41 @@ function discovery(options, callback) {
 
   request(opt, (error, response, body) => {
     const result = JSON.parse(body);
+    // console.log(result);
     const callback_option = JSON.parse(JSON.stringify(options));
     callback_option.result = {};
     if (result.outlets.length === 0) {
       callback_option.result.err_no = 999;
       callback_option.result.err_msg = 'no plugs data';
     } else {
+      callback_option.xim_content.list = [];
       callback_option.list = [];
       Object.keys(result.outlets).forEach((key) => {
         const plug = {};
         plug.status = {};
         plug.device_name = result.outlets[key].label;
         plug.device_id = result.outlets[key].id;
+        plug.toggle_support = true;
+        plug.momentum_support = false;
+        plug.status.mode = 'onoff';
+        const toggle = {};
+        toggle.device_id = result.outlets[key].id;
         if (result.outlets[key].outlet === 'on') {
           plug.status.onoff = true;
+          toggle.onoff = true;
         } else {
           plug.status.onoff = false;
+          toggle.onoff = false;
         }
+        plug.status.connected = true;
+        callback_option.xim_content.list.push(toggle);
         callback_option.list.push(plug);
-        callback_option.result.err_no = 0;
-        callback_option.result.err_msg = 'ok';
       });
-      delete callback_option.list[0].status;
+      callback_option.result.err_no = 0;
+      callback_option.result.err_msg = 'ok';
+      // delete callback_option.list[0].status;
     }
+    // console.log(callback_option);
     callback(callback_option);
   });
 }

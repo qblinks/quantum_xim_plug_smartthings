@@ -73,7 +73,6 @@ function authenticate(options, callback) {
       callback_options.xim_content.uri = endpoint.uri;
       callback_options.result.err_no = 0;
       callback_options.result.err_msg = 'ok';
-      callback(callback_options);
     });
   });
 }

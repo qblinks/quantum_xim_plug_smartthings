@@ -33,16 +33,21 @@ function stat(options, callback) {
   request(opt, (error, response, body) => {
     const result = JSON.parse(body);
     const callback_option = JSON.parse(JSON.stringify(options));
+    callback_option.xim_content.list = [];
     callback_option.stat = [];
+    const toggle = {};
     const plug = {};
     plug.plug_status = {};
     plug.device_name = result.label;
     plug.device_id = result.id;
     if (result.switch === 'on') {
       plug.plug_status.onoff = true;
+      toggle.onoff = true;
     } else {
       plug.plug_status.onoff = false;
+      toggle.onoff = false;
     }
+    callback_option.xim_content.list.push(toggle);
     callback_option.stat.push(plug);
     delete callback_option.device_id;
     delete callback_option.stat;
