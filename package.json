@@ -28,6 +28,7 @@
   },
   "dependencies": {
     "color-convert": "^1.8.2",
+    "commander": "^2.9.0",
     "express": "^4.15.2",
     "mathjs": "^3.8.1",
     "mute": "^2.0.6",
