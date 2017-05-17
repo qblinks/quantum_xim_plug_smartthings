@@ -33,24 +33,33 @@ function stat(options, callback) {
   request(opt, (error, response, body) => {
     const result = JSON.parse(body);
     const callback_option = JSON.parse(JSON.stringify(options));
-    callback_option.xim_content.list = [];
-    callback_option.stat = [];
-    const toggle = {};
-    const plug = {};
-    plug.plug_status = {};
-    plug.device_name = result.label;
-    plug.device_id = result.id;
-    if (result.switch === 'on') {
-      plug.plug_status.onoff = true;
-      toggle.onoff = true;
+    callback_option.result = {};
+    if (typeof options.xim_content === 'undefined' || typeof options.xim_content === 'undefined') {
+      callback_option.result.err_no = 999;
+      callback_option.result.err_msg = 'access token undefined';
+    } else if (typeof options.xim_content.uri === 'undefined') {
+      callback_option.result.err_no = 999;
+      callback_option.result.err_msg = 'uri undefined';
+    } else if (typeof options.device_id === 'undefined') {
+      callback_option.result.err_no = 999;
+      callback_option.result.err_msg = 'device id undefined';
+    } else if (result.length === 0) {
+      callback_option.result.err_no = 999;
+      callback_option.result.err_msg = 'no plugs data';
     } else {
-      plug.plug_status.onoff = false;
-      toggle.onoff = false;
+      callback_option.xim_content.toggle = [];
+      const toggle = {};
+      toggle.device_id = result.id;
+      if (result.switch === 'on') {
+        toggle.onoff = true;
+      } else {
+        toggle.onoff = false;
+      }
+      callback_option.xim_content.toggle.push(toggle);
+      callback_option.result.err_no = 0;
+      callback_option.result.err_msg = 'ok';
     }
-    callback_option.xim_content.list.push(toggle);
-    callback_option.stat.push(plug);
     delete callback_option.device_id;
-    delete callback_option.stat;
     callback(callback_option);
   });
 }

@@ -29,14 +29,19 @@ function discovery(options, callback) {
 
   request(opt, (error, response, body) => {
     const result = JSON.parse(body);
-    // console.log(result);
     const callback_option = JSON.parse(JSON.stringify(options));
     callback_option.result = {};
-    if (result.outlets.length === 0) {
+    if (typeof options.xim_content === 'undefined' || typeof options.xim_content === 'undefined') {
+      callback_option.result.err_no = 999;
+      callback_option.result.err_msg = 'access token undefined';
+    } else if (typeof options.xim_content.uri === 'undefined') {
+      callback_option.result.err_no = 999;
+      callback_option.result.err_msg = 'uri undefined';
+    } else if (result.outlets.length === 0) {
       callback_option.result.err_no = 999;
       callback_option.result.err_msg = 'no plugs data';
     } else {
-      callback_option.xim_content.list = [];
+      callback_option.xim_content.toggle = [];
       callback_option.list = [];
       Object.keys(result.outlets).forEach((key) => {
         const plug = {};
@@ -48,7 +53,7 @@ function discovery(options, callback) {
         plug.status.mode = 'onoff';
         const toggle = {};
         toggle.device_id = result.outlets[key].id;
-        if (result.outlets[key].outlet === 'on') {
+        if (result.outlets[key].switch === 'on') {
           plug.status.onoff = true;
           toggle.onoff = true;
         } else {
@@ -56,14 +61,12 @@ function discovery(options, callback) {
           toggle.onoff = false;
         }
         plug.status.connected = true;
-        callback_option.xim_content.list.push(toggle);
+        callback_option.xim_content.toggle.push(toggle);
         callback_option.list.push(plug);
       });
       callback_option.result.err_no = 0;
       callback_option.result.err_msg = 'ok';
-      // delete callback_option.list[0].status;
     }
-    // console.log(callback_option);
     callback(callback_option);
   });
 }
