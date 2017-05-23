@@ -49,7 +49,7 @@ function discovery(options, callback) {
         plug.device_name = result.outlets[key].label;
         plug.device_id = result.outlets[key].id;
         plug.toggle_support = true;
-        plug.momentum_support = false;
+        plug.momentum_support = true;
         plug.status.mode = 'onoff';
         const toggle = {};
         toggle.device_id = result.outlets[key].id;
