@@ -48,6 +48,7 @@ function discovery(options, callback) {
         plug.status = {};
         plug.device_name = result.outlets[key].label;
         plug.device_id = result.outlets[key].id;
+        plug.is_group = false;
         plug.toggle_support = true;
         plug.momentum_support = true;
         plug.status.mode = 'onoff';

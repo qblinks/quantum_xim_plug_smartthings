@@ -132,7 +132,7 @@ const request = require('request'),
                     if (response.statusCode != 200) {
                       // error handling
                       logger.log('error', 'Invalid XIM driver output.');
-                      console.log(save_post_data);
+                      console.log(JSON.parse(save_post_data));
                       console.log(save_body);
                       process.exit(0);
                     } else {

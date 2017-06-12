@@ -22,8 +22,6 @@ module.exports = {
   quantum_token: my_quantum_token,
   device_id: my_device_id,
   action: {
-    onoff: false,
     toggle: true,
-    momentum: true,
   },
 };
