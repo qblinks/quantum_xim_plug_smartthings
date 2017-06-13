@@ -27,7 +27,7 @@ function action(options, callback) {
   } else if (options.action.toggle === true && typeof options.xim_content.toggle !== 'undefined') {
     Object.keys(options.xim_content.toggle).forEach((key) => {
       if (options.xim_content.toggle[key].device_id === options.device_id) {
-        if (options.xim_content.toggle.onoff === true) {
+        if (options.xim_content.toggle[key].onoff === true) {
           onoff = 'off';
         } else {
           onoff = 'on';
@@ -77,9 +77,9 @@ function action(options, callback) {
       Object.keys(callback_option.xim_content.toggle).forEach((key) => {
         if (callback_option.xim_content.toggle[key].device_id === options.device_id) {
           if (onoff === 'on') {
-            callback_option.xim_content.toggle[key].onoff = 'true';
+            callback_option.xim_content.toggle[key].onoff = true;
           } else {
-            callback_option.xim_content.toggle[key].onoff = 'false';
+            callback_option.xim_content.toggle[key].onoff = false;
           }
         } else {
           const toggle = {};
