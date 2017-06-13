@@ -55,6 +55,22 @@ function stat(options, callback) {
       } else {
         toggle.onoff = false;
       }
+      callback_option.list = [];
+      const plug = {};
+      plug.status = {};
+      plug.device_name = result.label;
+      plug.device_id = result.id;
+      plug.is_group = false;
+      plug.toggle_support = true;
+      plug.momentum_support = true;
+      plug.status.mode = 'onoff';
+      if (result.switch === 'on') {
+        plug.status.onoff = true;
+      } else {
+        plug.status.onoff = false;
+      }
+      plug.status.connected = true;
+      callback_option.list.push(plug);
       callback_option.xim_content.toggle.push(toggle);
       callback_option.result.err_no = 0;
       callback_option.result.err_msg = 'ok';

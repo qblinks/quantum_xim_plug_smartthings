@@ -45,6 +45,7 @@ function action(options, callback) {
       Authorization: `Bearer ${options.xim_content.access_token}`,
     },
   };
+
   request(opt, (error, response) => {
     const callback_option = JSON.parse(JSON.stringify(options));
     callback_option.result = {};
@@ -91,7 +92,6 @@ function action(options, callback) {
       callback_option.result.err_no = 0;
       callback_option.result.err_msg = 'ok';
     }
-    console.log(callback_option.xim_content);
     delete callback_option.device_id;
     delete callback_option.action;
     callback(callback_option);
